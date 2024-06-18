@@ -1,24 +1,27 @@
 import 'dart:convert';
 
-class TvSeriesModel {
+class MovieModel {
+  Dates dates;
   int page;
   List<Result> results;
   int totalPages;
   int totalResults;
 
-  TvSeriesModel({
+  MovieModel({
+    required this.dates,
     required this.page,
     required this.results,
     required this.totalPages,
     required this.totalResults,
   });
 
-  factory TvSeriesModel.fromRawJson(String str) =>
-      TvSeriesModel.fromJson(json.decode(str));
+  factory MovieModel.fromRawJson(String str) =>
+      MovieModel.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory TvSeriesModel.fromJson(Map<String, dynamic> json) => TvSeriesModel(
+  factory MovieModel.fromJson(Map<String, dynamic> json) => MovieModel(
+        dates: Dates.fromJson(json["dates"]),
         page: json["page"],
         results:
             List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
@@ -27,6 +30,7 @@ class TvSeriesModel {
       );
 
   Map<String, dynamic> toJson() => {
+        "dates": dates.toJson(),
         "page": page,
         "results": List<dynamic>.from(results.map((x) => x.toJson())),
         "total_pages": totalPages,
@@ -34,19 +38,45 @@ class TvSeriesModel {
       };
 }
 
+class Dates {
+  DateTime maximum;
+  DateTime minimum;
+
+  Dates({
+    required this.maximum,
+    required this.minimum,
+  });
+
+  factory Dates.fromRawJson(String str) => Dates.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory Dates.fromJson(Map<String, dynamic> json) => Dates(
+        maximum: DateTime.parse(json["maximum"]),
+        minimum: DateTime.parse(json["minimum"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "maximum":
+            "${maximum.year.toString().padLeft(4, '0')}-${maximum.month.toString().padLeft(2, '0')}-${maximum.day.toString().padLeft(2, '0')}",
+        "minimum":
+            "${minimum.year.toString().padLeft(4, '0')}-${minimum.month.toString().padLeft(2, '0')}-${minimum.day.toString().padLeft(2, '0')}",
+      };
+}
+
 class Result {
   bool adult;
-  String? backdropPath;
+  String backdropPath;
   List<int> genreIds;
   int id;
-  List<String> originCountry;
   String originalLanguage;
-  String originalName;
+  String originalTitle;
   String overview;
   double popularity;
   String posterPath;
-  DateTime firstAirDate;
-  String name;
+  DateTime releaseDate;
+  String title;
+  bool video;
   double voteAverage;
   int voteCount;
 
@@ -55,14 +85,14 @@ class Result {
     required this.backdropPath,
     required this.genreIds,
     required this.id,
-    required this.originCountry,
     required this.originalLanguage,
-    required this.originalName,
+    required this.originalTitle,
     required this.overview,
     required this.popularity,
     required this.posterPath,
-    required this.firstAirDate,
-    required this.name,
+    required this.releaseDate,
+    required this.title,
+    required this.video,
     required this.voteAverage,
     required this.voteCount,
   });
@@ -76,14 +106,14 @@ class Result {
         backdropPath: json["backdrop_path"],
         genreIds: List<int>.from(json["genre_ids"].map((x) => x)),
         id: json["id"],
-        originCountry: List<String>.from(json["origin_country"].map((x) => x)),
         originalLanguage: json["original_language"],
-        originalName: json["original_name"],
+        originalTitle: json["original_title"],
         overview: json["overview"],
         popularity: json["popularity"]?.toDouble(),
         posterPath: json["poster_path"],
-        firstAirDate: DateTime.parse(json["first_air_date"]),
-        name: json["name"],
+        releaseDate: DateTime.parse(json["release_date"]),
+        title: json["title"],
+        video: json["video"],
         voteAverage: json["vote_average"]?.toDouble(),
         voteCount: json["vote_count"],
       );
@@ -93,15 +123,15 @@ class Result {
         "backdrop_path": backdropPath,
         "genre_ids": List<dynamic>.from(genreIds.map((x) => x)),
         "id": id,
-        "origin_country": List<dynamic>.from(originCountry.map((x) => x)),
         "original_language": originalLanguage,
-        "original_name": originalName,
+        "original_title": originalTitle,
         "overview": overview,
         "popularity": popularity,
         "poster_path": posterPath,
-        "first_air_date":
-            "${firstAirDate.year.toString().padLeft(4, '0')}-${firstAirDate.month.toString().padLeft(2, '0')}-${firstAirDate.day.toString().padLeft(2, '0')}",
-        "name": name,
+        "release_date":
+            "${releaseDate.year.toString().padLeft(4, '0')}-${releaseDate.month.toString().padLeft(2, '0')}-${releaseDate.day.toString().padLeft(2, '0')}",
+        "title": title,
+        "video": video,
         "vote_average": voteAverage,
         "vote_count": voteCount,
       };
