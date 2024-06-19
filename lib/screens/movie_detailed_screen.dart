@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:netflix_clone/common/utils.dart';
 import 'package:netflix_clone/models/movie_detail_model.dart';
@@ -35,7 +36,9 @@ class MovieDetailScreenState extends State<MovieDetailScreen> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    print(widget.movieId);
+    if (kDebugMode) {
+      print(widget.movieId);
+    }
     return Scaffold(
       body: SingleChildScrollView(
         child: FutureBuilder(

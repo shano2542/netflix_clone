@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:netflix_clone/common/utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:netflix_clone/models/movie_detail_model.dart';
@@ -89,7 +90,9 @@ class ApiServices {
   Future<SearchModel> getSearchedMovie(String searchText) async {
     endPoint = 'search/movie?query=$searchText';
     final url = '$baseUrl$endPoint';
-    print(url);
+    if (kDebugMode) {
+      print(url);
+    }
     final response = await http.get(Uri.parse(url), headers: {
       'Authorization':
           'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiNjAyNTc3N2IxMjRmMmVjZTY4YTFkMjdhNGIyMGI5ZCIsInN1YiI6IjY2NzAyMmU0MGViNjAyY2Y4YmQxZGJlNSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.GEoABGwsH_vF2mwp36Hf0_VjgCdhQ3iPzcf1bDkPfvA'
